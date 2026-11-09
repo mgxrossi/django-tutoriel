@@ -1,0 +1,12 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers compilés Python
+__pycache__/
+*.pyc
+
+# Base de données locale
+db.sqlite3
+
+# Configuration de PyCharm
+.idea/
