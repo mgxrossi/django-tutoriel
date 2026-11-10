@@ -122,3 +122,53 @@ Question 7 : tri antéchronologique
 2026-11-10 11:00:00+00:00 Quel sport pratiques-tu ?
 2026-11-09 14:57:14+00:00 Quel est ton animal préféré ?
 ```
+
+Question 9 : créer une question
+
+```
+>>> q = Question(question_text="Quel est ton plat préféré ?", pub_date=timezone.now())
+>>> q.save()
+>>> print(q.id, q.question_text, q.pub_date)
+7 Quel est ton plat préféré ? 2026-11-10 14:03:28.950777+00:00
+```
+
+`timezone.now()` donne la date et l'heure actuelles. La question n'est enregistrée dans la base qu'au moment de l'appel à `save()` ; Django lui attribue alors automatiquement l'id 7.
+
+
+Question 10 : ajouter 3 choix à cette question
+
+```
+>>> q.choice_set.create(choice_text="pizza", votes=0)
+<Choice: pizza>
+>>> q.choice_set.create(choice_text="sushi", votes=0)
+<Choice: sushi>
+>>> q.choice_set.create(choice_text="couscous", votes=0)
+<Choice: couscous>
+>>> for c in q.choice_set.all():
+...     print(c.id, c.choice_text, c.votes)
+...
+21 pizza 0
+22 sushi 0
+23 couscous 0
+```
+
+`choice_set.create()` crée le choix, le rattache à la question `q` et l'enregistre en une seule opération.
+
+Question 11 : lister les questions publiées récemment
+
+Une question est considérée comme récente si elle a été publiée dans les dernières 24 heures, comme dans la méthode `was_published_recently()` du tutoriel.
+
+```
+>>> import datetime
+>>> maintenant = timezone.now()
+>>> Question.objects.filter(pub_date__gte=maintenant - datetime.timedelta(days=1), pub_date__lte=maintenant)
+<QuerySet [<Question: Quel sport pratiques-tu ?>, <Question: Quel est ton animal préféré ?>, <Question: Quel est ton plat préféré ?>]>
+```
+
+- `datetime.timedelta(days=1)` représente une durée d'un jour ;
+- `__gte` signifie « supérieur ou égal », `__lte` « inférieur ou égal ».
+
+La condition `pub_date__lte=maintenant` exclut les questions dont la date de publication est dans le futur. Sans elle, la question « Quelle saison préfères-tu ? » (datée du 10 novembre à 17h00 UTC, donc pas encore publiée au moment de la requête) aurait été comptée comme récente. La méthode `was_published_recently()` du tutoriel présente ce défaut, corrigé dans la 5e partie.
+
+Petite remarque : 
+Mes nouveaux choix ont les ids 21 à 23 et non 19 à 21 car deux choix ont été créés puis supprimés à un moment (dans l’admin). Django ne réutilise jamais un id supprimé.
