@@ -1,0 +1,30 @@
+Questions 5 à 7 : gestion des utilisateurs
+
+Trois cases de la fiche d'un utilisateur contrôlent son accès :
+
+| Case | Rôle |
+
+| Actif | Le compte peut être utilisé |
+| Statut équipe | L'utilisateur peut se connecter à l'administration mais ne gère rien |
+| Statut super-utilisateur | L'utilisateur a tous les droits |
+
+
+Question 5 : utilisateur sans statut équipe
+
+Création de l'utilisateur `testeur` via *Utilisateurs > Ajouter utilisateur*, sans « Statut équipe » ni « Statut super-utilisateur ».
+
+Résultat : la connexion à l'administration est refusée. Le compte existe, mais seuls les utilisateurs ayant le statut équipe peuvent accéder à l'administration.
+
+
+Question 6 : accès à l'administration et changement de mot de passe
+
+Connecté en super-utilisateur, la case « Statut équipe » de `testeur` a été cochée, puis son mot de passe modifié depuis sa fiche (le mot de passe n'est jamais affiché en clair, il est stocké sous forme chiffrée).
+
+Résultat : **la connexion fonctionne**, mais l'utilisateur ne voit aucune rubrique : il n'a encore aucune permission sur les données. Le statut équipe donne l'accès à l'administration, les permissions déterminent ensuite ce qu'il peut y faire.
+
+
+Question 7 : désactivation du compte**
+
+La case « Actif » de `testeur` a été décochée.
+
+Résultat : **la connexion est refusée**. Désactiver un compte plutôt que le supprimer permet de conserver ses données et son historique, et de le réactiver facilement si besoin. Une suppression serait définitive.
