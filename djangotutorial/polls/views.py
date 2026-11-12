@@ -48,3 +48,10 @@ def vote(request, question_id):
     # Sinon » (else) : j’ajoute +1 vote, j’enregistre, et j’envoie le visiteur vers la page des résultats
     #Le renvoi vers les résultats (HttpResponseRedirect) : sans lui, si le visiteur actualise la page, son vote serait compté deux fois.
     # On le renvoie donc ailleurs juste après le vote
+
+
+def all_polls(request):
+    questions = Question.objects.order_by("id")
+    #va chercher toutes les questions, rangées par numéro
+    return render(request, "polls/all.html", {"questions": questions})
+    #donne-les à la feuille all.html, avec l’étiquette questions
