@@ -1,8 +1,23 @@
-<h1>{{ question.question_text }}</h1>
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }}</li>
-{% endfor %}
-</ul>
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h1>{{ question.question_text }}</h1></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Vote">
+</form>
 
-<!--En gros titre, le texte de la question. Puis une liste : pour chaque choix de cette question, écris son texte -->
+<!--
+<form action="{% url 'polls:vote' question.id %}"	« Quand on clique sur Vote, envoie la réponse à la page vote »
+method="post"	« On envoie quelque chose qui modifie la base » (obligatoire pour un vote)
+ csrf_token 	Un badge de sécurité qui prouve que le formulaire vient bien de ton site. Sans lui, Django refuse (erreur 403)
+ if error_message ...	« S’il y a un message d’erreur, affiche-le » (servira si on oublie de cocher)
+<input type="radio" name="choice" value="{{ choice.id }}">	Une case ronde par choix. Si on la coche, on envoie le numéro de ce choix sous l’étiquette choice
+forloop.counter	Le numéro du tour de boucle (1, 2, 3…). Juste pour donner un nom unique à chaque case
+<input type="submit" value="Vote">	Le bouton « Vote »
+Le plus important à retenir : quand le visiteur coche « python » (choix n°4) et clique sur Vote, le navigateur envoie simplement choice=4 à la page vote
+-->
