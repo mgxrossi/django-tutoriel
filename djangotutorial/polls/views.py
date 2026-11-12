@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from .models import Question
+from django.shortcuts import render
 
 
 def index(request):
@@ -13,7 +14,11 @@ def index(request):
 
 
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    #va chercher la question qui a ce numéro, ou affiche page introuvable
+    #question_id, c’est le numéro pris dans l’adresse (le 1 de /polls/1/)
+    return render(request, "polls/detail.html", {"question": question})
+    #donne cette question à la feuille detail.html, avec l’étiquette question
 
 
 def results(request, question_id):
