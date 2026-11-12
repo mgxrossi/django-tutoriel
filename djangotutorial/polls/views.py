@@ -10,6 +10,9 @@ from django.views import generic
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
+    #avec ListView django écris le plateau et choisit l’étiquette tout seul, avec une règle fixe : nom du modèle en minuscules + _list. Pour le modèle Question, ça donne question_list
+    #pb ma feuille cherche latest_question_list, Django a écrit question_list donc on mets l’étiquette latest_question_list sur le plateau
+    #feuille index.html cherche l’étiquette latest_question_list : html % for question in latest_question_list %
 
     def get_queryset(self):
         return Question.objects.order_by("-pub_date")[:5]  #Voici quelles questions lister : les 5 plus récentes
@@ -23,7 +26,6 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
-
 
 
 def vote(request, question_id):
