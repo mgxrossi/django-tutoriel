@@ -13,4 +13,6 @@ urlpatterns = [
     #"all/" : l’adresse, qui donne /polls/all/ (le polls/ vient de mysite/urls.py
     #views.all_polls : la fonction qui s’en occupe
     #name="all" : son nom, pour faire des liens avec % url 'polls:all' %
+    path("<int:question_id>/frequency/", views.frequency, name="frequency"),
+    #un numéro dans l’adresse, et c’est une fonction, donc on garde le nom question_id
 ]

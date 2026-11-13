@@ -1,0 +1,15 @@
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for item in choices %}
+    <li>{{ item.0.choice_text }} : {{ item.1 }} vote{{ item.1|pluralize }} ({{ item.2 }} %)</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:all' %}">Retour à tous les sondages</a>
+
+<!--Chaque item est un paquet de 3 infos. Pour prendre l’une d’elles, on écrit le point suivi de sa position, en comptant à partir de 0
+item.0	1re info	le choix (donc item.0.choice_text = son texte)
+item.1	2e info	le nombre de votes
+item.2	3e info	le pourcentage
+-->

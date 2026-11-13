@@ -55,3 +55,11 @@ def all_polls(request):
     #va chercher toutes les questions, rangées par numéro
     return render(request, "polls/all.html", {"questions": questions})
     #donne-les à la feuille all.html, avec l’étiquette questions
+
+
+def frequency(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)    #trouve la question (ou 404)
+    choices = question.get_choices()    #demande-lui ses choix avec leurs pourcentages » (la méthode de models.py)
+    return render(request, "polls/frequency.html", {"question": question, "choices": choices})
+                 #donne la question et la liste à la feuille, avec deux étiquettes : question et choices
+#
